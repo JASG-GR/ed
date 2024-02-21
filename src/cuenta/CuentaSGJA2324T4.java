@@ -1,123 +1,66 @@
 package cuenta;
 
-
+/**
+ * La clase CuentaSGJA2324T4 representa una cuenta bancaria con funcionalidades básicas
+ * como ingresar dinero, retirar dinero y obtener el saldo actual.
+ * Esta clase proporciona métodos para realizar estas operaciones de forma segura.
+ * La cuenta está identificada por un nombre de titular, un número de cuenta IBAN,
+ * un saldo inicial y un límite de descubierto.
+ * @author sgja2324
+ */
 public class CuentaSGJA2324T4 {
 
+    private String titular; 
+    private String iban;    
+    private double saldo;   
+    private double descubierto; 
 
-        private String nombre;
-    private String cuenta;
-    private double saldo;
-    private double tipoInteres;
-
-   
-    public CuentaSGJA2324T4 ()
-    {
-    }
-   
-   
-    public CuentaSGJA2324T4 (String nom, String cue, double sal, double tipo)
-    {
-        nombre =nom;
-        cuenta=cue;
-        saldo=sal;
-        tipoInteres=tipo;
-    }
-   
-    
-    public void asignarNombre(String nom)
-    {
-        setNombre(nom);
-    }
-   
-   
-    public String obtenerNombre()
-    {
-        return getNombre();
-    }
-
-    
-     public double estado ()
-    {
-        return getSaldo();
-    }
-
-   
-    public void ingresar(double cantidad, String concepto) throws Exception
-    {
-        if (cantidad<0)
-            throw new Exception("No se puede ingresar una cantidad negativa");
-        setSaldo(getSaldo() + cantidad);
-    }
-
-    
-    public void retirar (double cantidad) throws Exception
-    {
-        if (cantidad <= 0)
-            throw new Exception ("No se puede retirar una cantidad negativa");
-        if (estado()<= cantidad)
-            throw new Exception ("No hay suficiente saldo");
-        setSaldo(getSaldo() - cantidad);
-    }
-
-    
-    public String obtenerCuenta ()
-    {
-        return getCuenta();
+    /**
+     * Constructor para la clase CuentaSGJA2324T4.
+     * @param titular Nombre del titular de la cuenta.
+     * @param iban Número de cuenta IBAN.
+     * @param saldo Saldo inicial de la cuenta.
+     * @param descubierto Límite de descubierto permitido para la cuenta.
+     */
+    public CuentaSGJA2324T4(String titular, String iban, double saldo, double descubierto) {
+        this.titular = titular;
+        this.iban = iban;
+        this.saldo = saldo;
+        this.descubierto = descubierto;
     }
 
     /**
-     * @return the nombre
+     * Método para obtener el estado actual de la cuenta.
+     * @return El saldo actual de la cuenta.
      */
-    public String getNombre() {
-        return nombre;
-    }
-
-    /**
-     * @param nombre the nombre to set
-     */
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    /**
-     * @return the cuenta
-     */
-    public String getCuenta() {
-        return cuenta;
-    }
-
-    /**
-     * @param cuenta the cuenta to set
-     */
-    public void setCuenta(String cuenta) {
-        this.cuenta = cuenta;
-    }
-
-    /**
-     * @return the saldo
-     */
-    public double getSaldo() {
+    public double estado() {
         return saldo;
     }
 
     /**
-     * @param saldo the saldo to set
+     * Método para ingresar dinero en la cuenta.
+     * @param cantidad La cantidad a ingresar en la cuenta.
+     * @throws Exception Si la cantidad es negativa.
      */
-    public void setSaldo(double saldo) {
-        this.saldo = saldo;
+    public void ingresar(double cantidad) throws Exception {
+        if (cantidad < 0) {
+            throw new Exception("No se puede ingresar una cantidad negativa.");
+        }
+        saldo += cantidad;
     }
 
     /**
-     * @return the tipoInteres
+     * Método para retirar dinero de la cuenta.
+     * @param cantidad La cantidad a retirar de la cuenta.
+     * @throws Exception Si la cantidad a retirar excede el saldo más el límite de descubierto.
      */
-    public double getTipoInteres() {
-        return tipoInteres;
-    }
-
-    /**
-     * @param tipoInteres the tipoInteres to set
-     */
-    public void setTipoInteres(double tipoInteres) {
-        this.tipoInteres = tipoInteres;
+    public void retirar(double cantidad) throws Exception {
+        if (cantidad < 0) {
+            throw new Exception("No se puede retirar una cantidad negativa.");
+        }
+        if (saldo - cantidad < -descubierto) {
+            throw new Exception("No se puede retirar más dinero del disponible (incluyendo el descubierto).");
+        }
+        saldo -= cantidad;
     }
 }
